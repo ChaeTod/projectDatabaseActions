@@ -20,6 +20,7 @@ public class Main {
             System.out.println("1 - Show city database");
             System.out.println("2 - Add new line to the database");
             System.out.println("3 - Find the country and a population by inputted city");
+            System.out.println("4 - Find top 20 cities and countries by the population");
             System.out.println("0 - Exit");
             System.out.println("------------------------------");
             choice = in.nextInt();
@@ -33,6 +34,9 @@ public class Main {
                     Request.addNewLine(connection);  // add new city and an info about it to the table city if there are no duplicates in it.
                     break;
                 case 3:
+                    Request.makeSelectByCity(connection);
+                    break;
+                case 4:
 
                     break;
                 default:

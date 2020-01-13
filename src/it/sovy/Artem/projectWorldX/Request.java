@@ -62,6 +62,26 @@ public class Request {
         }
     }
 
+    public static void makeSelectByCity(Connection connection) throws SQLException {
+        try {
+            Scanner in = new Scanner(System.in);
+            System.out.println("Input the city: ");
+            String cityName = in.nextLine();
+            PreparedStatement preparedStatement = connection.prepareCall("SELECT city.Name, country.Name AS Country_Name, json_extract(Info, '$.Population') AS Population FROM city JOIN country ON country.code = city.CountryCode WHERE city.Name = ?");
+            preparedStatement.setString(1, cityName);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                String cityName2 = result.getString("city.Name");
+                String countryName = result.getString("Country_Name");
+                String population = result.getString("Population");
+                System.out.println(cityName2 + " " + countryName + " " + population + "\n");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public static void showTable(int tableNum, Connection connection) throws SQLException {
         Statement stmt = null;
         String query = null;
