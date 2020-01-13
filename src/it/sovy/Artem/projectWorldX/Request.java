@@ -77,6 +77,28 @@ public class Request {
                 String population = result.getString("Population");
                 System.out.println(cityName2 + " " + countryName + " " + population + "\n");
             }
+            result.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void makeSelectByPopulation(Connection connection){
+        try {
+            PreparedStatement preparedStatement = connection.prepareCall("SELECT city.Name, country.Name AS Country_Name, json_extract(Info, '$.Population') AS Population FROM city JOIN country ON country.code = city.CountryCode ORDER BY Population DESC Limit 20");
+            ResultSet result1 = preparedStatement.executeQuery();
+
+            int i = 0;
+
+            while (result1.next()) {
+                i++;
+                System.out.print(i + " ");
+                String cityName2 = result1.getString("city.Name");
+                String countryName = result1.getString("Country_Name");
+                String population = result1.getString("Population");
+                System.out.println(cityName2 + " " + countryName + " " + population + "\n");
+            }
+            result1.close();
         } catch (Exception e){
             e.printStackTrace();
         }

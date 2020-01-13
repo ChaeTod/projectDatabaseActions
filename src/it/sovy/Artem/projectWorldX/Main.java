@@ -37,7 +37,7 @@ public class Main {
                     Request.makeSelectByCity(connection);
                     break;
                 case 4:
-
+                    Request.makeSelectByPopulation(connection);
                     break;
                 default:
                     System.out.println("Have a nice day!");
@@ -49,108 +49,5 @@ public class Main {
         } catch (Exception e){
             e.printStackTrace();
         }
-
-
-
-
-
-
-        /*
-        try{
-            //Class.forName("com.mysql.cj.jdbc.Driver");  //register the driver in the project
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            System.out.println("Connecting to a selected database...");
-            Connection connetion = DriverManager.getConnection("jdbc:mysql://localhost:3308/world_x", "root", "");
-            System.out.println("Connected database successfully...");
-
-            Statement stmt = connetion.createStatement(); //create a statement
-
-            PreparedStatement pStmnt = null;
-
-            String sql1 = "SELECT * FROM city";
-            ResultSet rs = stmt.executeQuery(sql1);
-
-            Scanner in = new Scanner(System.in);
-
-            String preQueryStatement = "SELECT * FROM city WHERE city.Name = ?";
-            pStmnt = connetion.prepareStatement(preQueryStatement);
-            System.out.println("Input the name of the city in database: ");
-            pStmnt.setString(1, in.nextLine());
-
-            ResultSet rs1 = pStmnt.executeQuery();
-            if (!rs1.next()){
-
-                String query = " insert into city (ID, Name, CountryCode, District, Info)"
-                        + " values (?, ?, ?, ?, ?)";
-                PreparedStatement preparedStmt = connetion.prepareStatement(query);
-
-                preparedStmt.setInt(1,4082);
-                preparedStmt.setString (2, "Rootang");
-                preparedStmt.setString (3, "ROT");
-                preparedStmt.setString(4, "Sabol");
-                preparedStmt.setString(5, "{\"Population\":1885055}");  // correct shown the json
-                preparedStmt.executeUpdate();
-
-                System.out.println("New line added");
-            } else {
-                System.out.println("That line is already in data base");
-
-            }
-// Input the select for cities
-            System.out.println("Input the city: ");
-            String cityName = in.nextLine();
-            PreparedStatement preparedStatement = connetion.prepareCall("SELECT city.Name, country.Name AS Country_Name, json_extract(Info, '$.Population') AS Population FROM city JOIN country ON country.code = city.CountryCode WHERE city.Name = ?");
-            preparedStatement.setString(1, cityName);
-            ResultSet result = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("ID");
-                String lastName = rs.getString("Name");
-                String countryCode = rs.getString("CountryCode");
-                String district = rs.getString("District");
-                String info = rs.getString("Info");
-                System.out.println(id + " " + lastName + " " + countryCode+ " "+ district+ " " + info+ "\n");
-            }
-
-
-            System.out.println("--------------------------------------------");
-            while (result.next()) {
-                String cityName2 = result.getString("city.Name");
-                String countryName = result.getString("Country_Name");
-                String population = result.getString("Population");
-                System.out.println(cityName2 + " " + countryName + " " + population + "\n");
-            }
-
-
-
-            // The biggest cities in the world
-
-            preparedStatement = connetion.prepareCall("SELECT city.Name, country.Name AS Country_Name, json_extract(Info, '$.Population') AS Population FROM city JOIN country ON country.code = city.CountryCode ORDER BY Population DESC Limit 20");
-            //preparedStatement.setString(1, cityName);
-            ResultSet result1 = preparedStatement.executeQuery();
-
-            int i = 0;
-
-            System.out.println("--------------------------------------------");
-            while (result1.next()) {
-                i++;
-                System.out.print(i+ " ");
-                String cityName2 = result1.getString("city.Name");
-                String countryName = result1.getString("Country_Name");
-                String population = result1.getString("Population");
-                System.out.println(cityName2 + " " + countryName + " " + population + "\n");
-            }
-
-
-            rs.close();
-            result.close();
-            result1.close();
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-         */
     }
 }
