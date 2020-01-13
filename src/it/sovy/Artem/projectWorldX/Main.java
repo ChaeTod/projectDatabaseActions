@@ -14,7 +14,6 @@ public class Main {
             System.out.println("Connected database successfully...");
             System.out.println("Ready to work with it!");
 
-
             Scanner in = new Scanner(System.in);
             int choice = 0, tableNum = 0;
             System.out.println("------------------------------");
@@ -28,11 +27,13 @@ public class Main {
                 case 1:
                     System.out.println("Input the number of table to show (1-4): ");
                     tableNum = in.nextInt();
-                    Request.showTable(tableNum, connection);
+                    Request.showTable(tableNum, connection);  // print the database statements into the console
                     break;
                 case 2:
+                    Request.addNewLine(connection);  // add new city and an info about it to the table city if there are no duplicates in it.
                     break;
                 case 3:
+
                     break;
                 default:
                     System.out.println("Have a nice day!");

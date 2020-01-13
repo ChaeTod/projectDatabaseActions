@@ -1,11 +1,67 @@
 package it.sovy.Artem.projectWorldX;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Scanner;
+
+/*  // check it how to import the JSON's
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+or
+import net.sf.json.*;
+but for using it, we suppose to download and add to the project a JSON-lib
+*/
 
 public class Request {
+    public static void addNewLine(Connection connection) throws SQLException {
+        //JSONObject jsonObject = new JSONObject();
+        try {
+            Scanner in = new Scanner(System.in);
+            PreparedStatement pStmnt = null;
+
+            String preQueryStatement = "SELECT * FROM city WHERE city.Name = ?";
+            pStmnt = connection.prepareStatement(preQueryStatement);
+            System.out.println("Input the name of the city in database to check for duplicates: ");
+            pStmnt.setString(1, in.nextLine());
+
+            ResultSet rs1 = pStmnt.executeQuery();
+            if (!rs1.next()) {
+
+                System.out.println("Input new number ID: "); //in the future, ID number should be updated automatically
+                int newID = in.nextInt();
+                in.nextLine();
+                System.out.println("Input the name for the new city: ");
+                String newCityName = in.nextLine();
+                System.out.println("Input the CountryCode for the new city: ");
+                String newCountryCode = in.nextLine();
+                System.out.println("Input the District for the new city: ");
+                String newDistrict = in.nextLine();
+                System.out.println("Input the information about the population for the new city: ");
+                String newInfo = in.nextLine();
+
+                //JSONArray ja = new JSONArray();
+
+                String query = " insert into city (ID, Name, CountryCode, District, Info)"
+                        + " values (?, ?, ?, ?, ?)";
+                PreparedStatement preparedStmt = connection.prepareStatement(query);
+
+                preparedStmt.setInt(1, newID);
+                preparedStmt.setString(2, newCityName);
+                preparedStmt.setString(3, newCountryCode);
+                preparedStmt.setString(4, newDistrict);
+                preparedStmt.setString(5, newInfo);  // check out how to add properly new info to the json
+                //preparedStmt.setString(5, "{\"Population\":1885055}");  // correct shown for json
+                preparedStmt.executeUpdate();
+
+                System.out.println("New line added");
+            } else {
+                System.out.println("That city is already in data base! No need to add the same one!");
+            }
+            rs1.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public static void showTable(int tableNum, Connection connection) throws SQLException {
         Statement stmt = null;
         String query = null;
