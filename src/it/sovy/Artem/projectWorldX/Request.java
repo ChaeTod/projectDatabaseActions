@@ -57,7 +57,7 @@ public class Request {
                 System.out.println("That city is already in data base! No need to add the same one!");
             }
             rs1.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -78,12 +78,12 @@ public class Request {
                 System.out.println(cityName2 + " " + countryName + " " + population + "\n");
             }
             result.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void makeSelectByPopulation(Connection connection){
+    public static void makeSelectByPopulation(Connection connection) {
         try {
             PreparedStatement preparedStatement = connection.prepareCall("SELECT city.Name, country.Name AS Country_Name, json_extract(Info, '$.Population') AS Population FROM city JOIN country ON country.code = city.CountryCode ORDER BY Population DESC Limit 20");
             ResultSet result1 = preparedStatement.executeQuery();
@@ -99,10 +99,58 @@ public class Request {
                 System.out.println(cityName2 + " " + countryName + " " + population + "\n");
             }
             result1.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public static void makeSelectByCountryName(Connection connection) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Input the name of the country:");
+        String countryName = in.nextLine();
+        try {
+
+            PreparedStatement preparedStatement = connection.prepareCall("SELECT country.Name, json_extract(doc, '$.demographics.Population') AS Population FROM country JOIN countryinfo ON countryinfo._id = country.Code WHERE country.Name = ?");
+            preparedStatement.setString(1, countryName);
+            ResultSet result1 = preparedStatement.executeQuery();
+
+            while (result1.next()) {
+                countryName = result1.getString("Name");
+                String population = result1.getString("Population");
+                System.out.println(countryName + " " + population + " " + "\n");
+            }
+            result1.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void makeSelctByDate(Connection connection) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Input the month:");
+        String countryName = in.nextLine();
+        try {
+
+            PreparedStatement preparedStatement = connection.prepareCall("SELECT country.Name, json_extract(doc, '$.demographics.Population') AS Population FROM country JOIN countryinfo ON countryinfo._id = country.Code WHERE country.Name = ?");
+            preparedStatement.setString(1, "%-countryName-%");
+            ResultSet result1 = preparedStatement.executeQuery();
+
+            while (result1.next()) {
+                countryName = result1.getString("Name");
+                String population = result1.getString("Population");
+                System.out.println(countryName + " " + population + " " + "\n");
+            }
+            result1.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void insertNewUser(){
+
+    }
+
 
     public static void showTable(int tableNum, Connection connection) throws SQLException {
         Statement stmt = null;
